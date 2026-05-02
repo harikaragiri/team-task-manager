@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'https://team-task-manager-ngc2.onrender.com',
+  baseURL: process.env.REACT_APP_API_URL || 'https://team-task-manager-ngc2.onrender.com/api',
 });
 
 API.interceptors.request.use((config) => {
