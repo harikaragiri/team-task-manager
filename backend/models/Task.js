@@ -1,79 +1,50 @@
-const mongoose = require('mongoose');
+import React, { useEffect, useState } from "react";
 
-const taskSchema = new mongoose.Schema(
-  {
-    title: {
-      type: String,
-      required: [true, 'Task title is required'],
-      trim: true,
-      minlength: 2,
-      maxlength: 200,
-    },
+const Tasks = () => {
+  const [tasks, setTasks] = useState([]);
 
-    description: {
-      type: String,
-      trim: true,
-      maxlength: 1000,
-    },
+  useEffect(() => {
+    fetchTasks();
+  }, []);
 
-    project: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Project',
-      required: true,
-    },
+  const fetchTasks = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/tasks`
+      );
+      const data = await response.json();
+      setTasks(data);
+    } catch (error) {
+      console.log("Error fetching tasks:", error);
+    }
+  };
 
-    assignee: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-    },
-
-    createdBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      required: true,
-    },
-
-    status: {
-      type: String,
-      enum: ['todo', 'in-progress', 'review', 'done'],
-      default: 'todo',
-    },
-
-    priority: {
-      type: String,
-      enum: ['low', 'medium', 'high', 'urgent'],
-      default: 'medium',
-    },
-
-    dueDate: {
-      type: Date,
-    },
-
-    tags: [
-      {
-        type: String,
-        trim: true,
-      },
-    ],
-  },
-  { timestamps: true }
-);
-
-
-// index for faster filtering
-taskSchema.index({ project: 1, status: 1 });
-
-
-taskSchema.virtual('isOverdue').get(function () {
   return (
-    this.dueDate &&
-    this.status !== 'done' &&
-    new Date(this.dueDate).getTime() < Date.now()
+    <div style={{ padding: "20px" }}>
+      <h2>Tasks</h2>
+
+      {tasks.length === 0 ? (
+        <p>No tasks found</p>
+      ) : (
+        tasks.map((task) => (
+          <div
+            key={task._id}
+            style={{
+              border: "1px solid #ccc",
+              margin: "10px",
+              padding: "10px",
+              borderRadius: "8px",
+            }}
+          >
+            <h3>{task.title}</h3>
+            <p>{task.description}</p>
+            <p>Status: {task.status}</p>
+            <p>Priority: {task.priority}</p>
+          </div>
+        ))
+      )}
+    </div>
   );
-});
+};
 
-
-taskSchema.set('toJSON', { virtuals: true });
-taskSchema.set('toObject', { virtuals: true });
-
-module.exports = mongoose.model('Task', taskSchema);
+export default Tasks;
