@@ -3,8 +3,8 @@
   Full-Stack Assignment | Ethara.AI
 ================================================================
 
-LIVE URL: https://YOUR-APP-NAME.up.railway.app
-GITHUB:   https://github.com/YOUR-USERNAME/team-task-manager
+LIVE URL: team-task-manager-git-main-harikaragiris-projects.vercel.app
+GITHUB:   https://github.com/harikaragiri/team-task-manager
 
 ----------------------------------------------------------------
 PROJECT OVERVIEW
@@ -228,7 +228,3 @@ team-task-manager/
 ├── package.json
 ├── railway.toml             # Railway deploy config
 └── README.txt               # This file
-
-================================================================
-  Built for Ethara.AI Selection Round 1 | May 2026
-================================================================
